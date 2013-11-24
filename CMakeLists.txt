@@ -39,7 +39,7 @@ CPM_InitModule(${CPM_MODULE_NAME})
 # Include CMake external project module.
 include(ExternalProject)
 
-set(REPO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/glm")
+set(REPO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/lodepngsvn")
 CPM_EnsureRepoIsCurrent(
   TARGET_DIR ${REPO_SOURCE_DIR}
   SVN_REPOSITORY "http://lpi.googlecode.com/svn/trunk"
@@ -47,15 +47,11 @@ CPM_EnsureRepoIsCurrent(
   )
 CPM_ExportAdditionalIncludeDir("${REPO_SOURCE_DIR}")
 
-# Specify include dir
-ExternalProject_Get_Property(${EP_PROJECT_NAME} source_dir)
-include_directories(${source_dir}/include)
-CPM_ExportAdditionalIncludeDir("${source_dir}/include")
-
 # Copy source code into an include directory that is unlikely to conflict
 # with others' include directories.
+set(lodepng_src_dir ${source_dir}/lodepng)
 file(COPY ${source_dir}/trunk/
-     DESTINATION ${source_dir}/lodepng
+     DESTINATION ${lodepng_src_dir}
      FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
      DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                            GROUP_READ
@@ -63,4 +59,22 @@ file(COPY ${source_dir}/trunk/
 
 # Now construct a library that others can include in their project.
 
+#-----------------------------------------------------------------------
+# Source
+#-----------------------------------------------------------------------
+
+# Globbing has some downsides, but the advantages outweigh the
+# disadvantages.
+file (GLOB Sources
+  "${lodepng_src_dir}/lodepng.cpp"
+  "${lodepng_src_dir}/lodepng.h"
+  )
+
+#-----------------------------------------------------------------------
+# Library setup
+#-----------------------------------------------------------------------
+
+# Build the library.
+add_library(${CPM_LIB_TARGET_NAME} ${Sources})
+target_link_libraries(${CPM_LIB_TARGET_NAME} ${CPM_LIBRARIES})
 
