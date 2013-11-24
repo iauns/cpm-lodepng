@@ -11,3 +11,5 @@ Usage
 ```c++
 #include <lodepng/lodepng.h>
 ```
+
+See lodepng's [homepage](http://lodev.org/lodepng) for usage instructions.
