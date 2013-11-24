@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 
 #-----------------------------------------------------------------------
 # CPM configuration
@@ -39,25 +39,14 @@ CPM_InitModule(${CPM_MODULE_NAME})
 # Include CMake external project module.
 include(ExternalProject)
 
-set(REPO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/lodepngsvn")
+set(REPO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty")
 CPM_EnsureRepoIsCurrent(
-  TARGET_DIR ${REPO_SOURCE_DIR}
+  TARGET_DIR ${REPO_SOURCE_DIR}/lodepng
   SVN_REPOSITORY "http://lpi.googlecode.com/svn/trunk"
   SVN_REVISION "HEAD"
   )
+# Export include directory such that we have to prefix lodepng
 CPM_ExportAdditionalIncludeDir("${REPO_SOURCE_DIR}")
-
-# Copy source code into an include directory that is unlikely to conflict
-# with others' include directories.
-set(lodepng_src_dir ${source_dir}/lodepng)
-file(COPY ${source_dir}/trunk/
-     DESTINATION ${lodepng_src_dir}
-     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
-     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-                           GROUP_READ
-                           WORLD_READ WORLD_EXECUTE)
-
-# Now construct a library that others can include in their project.
 
 #-----------------------------------------------------------------------
 # Source
@@ -66,8 +55,8 @@ file(COPY ${source_dir}/trunk/
 # Globbing has some downsides, but the advantages outweigh the
 # disadvantages.
 file (GLOB Sources
-  "${lodepng_src_dir}/lodepng.cpp"
-  "${lodepng_src_dir}/lodepng.h"
+  "${REPO_SOURCE_DIR}/lodepng/lodepng.cpp"
+  "${REPO_SOURCE_DIR}/lodepng/lodepng.h"
   )
 
 #-----------------------------------------------------------------------
