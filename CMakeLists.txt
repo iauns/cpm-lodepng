@@ -45,7 +45,8 @@ CPM_EnsureRepoIsCurrent(
   SVN_REPOSITORY "http://lpi.googlecode.com/svn/trunk"
   SVN_REVISION "HEAD"
   )
-# Export include directory such that we have to prefix lodepng
+# Export include directory such that we have to prefix lodepng. Note the
+# addition of '/lodepng' in TARGET_DIR abov.
 CPM_ExportAdditionalIncludeDir("${REPO_SOURCE_DIR}")
 
 #-----------------------------------------------------------------------
