@@ -44,6 +44,7 @@ CPM_EnsureRepoIsCurrent(
   TARGET_DIR ${REPO_SOURCE_DIR}/lodepng
   SVN_REPOSITORY "http://lpi.googlecode.com/svn/trunk"
   SVN_REVISION "HEAD"
+  USE_CACHING TRUE
   )
 # Export include directory such that we have to prefix lodepng. Note the
 # addition of '/lodepng' in TARGET_DIR abov.
