@@ -9,6 +9,6 @@ fi
 set -e
 
 pushd ./bin > /dev/null
-  cmake -DCPM_MODULE_CACHE_DIR=$HOME/.cpm_cache ..
+  cmake ..
   make
 popd
